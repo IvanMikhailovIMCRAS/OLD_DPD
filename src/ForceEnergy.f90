@@ -86,11 +86,13 @@ subroutine calc_acceleration(N, NB, x, y, z, vx, vy, vz, BOX, FF, l_bond, k_bond
 		do i = 1, N
 				if (z(i).lt.lower_border) az(i) = az(i) + (lower_border-z(i))*wall
 				if (z(i).gt.upper_border) az(i) = az(i) + (upper_border-z(i))*wall
-				if (typ(i).ne.solvent) then
-					zt = (z(i) + 0.5*BOX(3) - UL)/dH
-					if (abs(zt).lt.10.0) then
-					ex = exp(zt)
-					az(i) = az(i) - UH * ex / dH / (1.0 + ex)**2
+				if (interact_on) then
+					if (typ(i).ne.solvent) then
+						zt = (z(i) + 0.5*BOX(3) - UL)/dH
+						if (abs(zt).lt.10.0) then
+						ex = exp(zt)
+						az(i) = az(i) - UH * ex / dH / (1.0 + ex)**2
+						endif
 					endif
 				endif
 		enddo

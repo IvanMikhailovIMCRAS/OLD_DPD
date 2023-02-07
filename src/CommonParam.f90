@@ -35,7 +35,7 @@ module CommonParam
 	real(4), public, parameter :: lambda = 0.65
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	real(4) :: UH, UL, dH
-	logical :: wall_on, solvent_on 
+	logical :: wall_on, solvent_on, interact_on 
 	character(len=128) :: path
 	integer(4) :: solvent, num_solvent
 	

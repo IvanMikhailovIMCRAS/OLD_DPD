@@ -51,8 +51,12 @@ subroutine show(N, NB, b1, b2, BOX, x, y, z, typ, num) ! печатает ent-ф
 	do i = 1, NB
 		dx = x(b1(i))-x(b2(i)); dy = y(b1(i))-y(b2(i)); dz = z(b1(i))-z(b2(i))
 		if (abs(dx).lt.BOX(1)*0.5.and.abs(dy).lt.BOX(2)*0.5.and.abs(dz).lt.BOX(3)*0.5) then
-			if ((.not.solvent_on).and.typ(b1(i)).ne.solvent.and.typ(b2(i)).ne.solvent) then
+			if (solvent_on) then
 				write(n_ent,'(a,I5,I5)') 'CONECT', b1(i), b2(i)
+			else
+				if (typ(b1(i)).ne.solvent.and.typ(b2(i)).ne.solvent) then
+					write(n_ent,'(a,I5,I5)') 'CONECT', b1(i), b2(i)
+				endif
 			endif
 		endif
 	enddo

@@ -17,6 +17,7 @@ program DPD ! The program for Dissipative Particle Dynamic simulation
 	character(255) :: tmp_string
 	character(2) :: flag
 	
+	path = ' '
 	call get_command_argument(1, flag)
 	if (flag == '-p') call get_command_argument(2, path)
 	
@@ -192,7 +193,7 @@ subroutine control(N, NB, BOX, x, y, z, vx, vy, vz, typ, b1, b2, num_types, FF, 
 	if (ioer.ne.0.or.k_bond.lt.0.0) call ERROR(9)
 	read(n_contr,*,iostat=ioer) k_ang        ! coefficient of the angle rigidity
 	if (ioer.ne.0.or.k_ang.lt.0.0) call ERROR(9)
-	read(n_contr,*,iostat=ioer)	num_step     ! number of steps
+	read(n_contr,*,iostat=ioer) num_step     ! number of steps
 	if (ioer.ne.0.or.num_step.lt.0) call ERROR(9)
 	read(n_contr,*,iostat=ioer) num_snapshot ! how often make snapshots of system
 	if (ioer.ne.0.or.num_snapshot.lt.1) call ERROR(9)
@@ -202,10 +203,13 @@ subroutine control(N, NB, BOX, x, y, z, vx, vy, vz, typ, b1, b2, num_types, FF, 
 	if (ioer.ne.0.or.wall.lt.0.0) call ERROR(9)
 	read(n_contr,*,iostat=ioer) i_tmp        ! exist wall normal to z-direction (0 or 1)
 	if (ioer.ne.0) call ERROR(9)
-	wall_on = (i_tmp.eq.1)
-	read(n_contr,*,iostat=ioer) solvent, i_tmp 
+	wall_on = (i_tmp.eq.1)                   ! logical label about existence of wall
+	read(n_contr,*,iostat=ioer) solvent, i_tmp ! type of the solvent beads and (0, 1) - to show the solvent
 	if (ioer.ne.0) call ERROR(9)
 	solvent_on = (i_tmp.eq.1) 
+	read(n_contr,*,iostat=ioer) i_tmp
+	if (ioer.ne.0) call ERROR(9)
+	interact_on = (i_tmp.eq.1)
 	read(n_contr,*,iostat=ioer) UL, UH, dH   ! attractive potential
 	if (ioer.ne.0.or.dH.le.0.0) call ERROR(9)
 		    	
