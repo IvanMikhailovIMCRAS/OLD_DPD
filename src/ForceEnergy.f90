@@ -89,7 +89,7 @@ subroutine calc_acceleration(N, NB, x, y, z, vx, vy, vz, BOX, FF, l_bond, k_bond
 				if (interact_on) then
 					if (typ(i).ne.solvent) then
 						zt = (z(i) + 0.5*BOX(3) - UL)/dH
-						if (abs(zt).lt.10.0) then
+						if (abs(zt).lt.(1.0 / dH)) then
 						ex = exp(zt)
 						az(i) = az(i) - UH * ex / dH / (1.0 + ex)**2
 						endif
