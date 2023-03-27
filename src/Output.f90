@@ -15,7 +15,7 @@ subroutine show(N, NB, b1, b2, BOX, x, y, z, typ, num) ! печатает ent-ф
 	real(4), intent(in) :: x(1:N), y(1:N), z(1:N)
 	character(128) Name_file
 	real(4) dx, dy, dz
-	integer(4) i
+	integer(4) i, ic
 	
 	
 
@@ -25,29 +25,35 @@ subroutine show(N, NB, b1, b2, BOX, x, y, z, typ, num) ! печатает ent-ф
 	open(n_ent,file = (trim(path) // Name_file))
 	! printing coordinates of beads:
 	do i = 1, N
+		if (ic.le.99999) then
+			ic = i 
+		else
+			ic = 0
+		endif
 		if (typ(i).gt.6) then
 			if (solvent_on) then
     			write(n_ent,'(a,I5,2x,a,I12,4x,F8.3,F8.3,F8.3)') &  
-				&           'HETATM',i,palette(6:6),i,x(i),y(i),z(i)
+				&           'HETATM',ic,palette(6:6),ic,x(i),y(i),z(i)
     		else
     			if (typ(i).ne.solvent) then
     				write(n_ent,'(a,I5,2x,a,I12,4x,F8.3,F8.3,F8.3)') &  
-				&           'HETATM',i,palette(6:6),i,x(i),y(i),z(i)
+				&           'HETATM',ic,palette(6:6),ic,x(i),y(i),z(i)
     			endif
     		endif
 		else
 			if (solvent_on) then
     			write(n_ent,'(a,I5,2x,a,I12,4x,F8.3,F8.3,F8.3)') &
-	    &           'HETATM',i,palette(typ(i):typ(i)),i,x(i),y(i),z(i)
+	    &           'HETATM',ic,palette(typ(i):typ(i)),ic,x(i),y(i),z(i)
     		else
     			if (typ(i).ne.solvent) then
     				write(n_ent,'(a,I5,2x,a,I12,4x,F8.3,F8.3,F8.3)') &
-	    &           'HETATM',i,palette(typ(i):typ(i)),i,x(i),y(i),z(i)
+	    &           'HETATM',ic,palette(typ(i):typ(i)),ic,x(i),y(i),z(i)
     			endif
     		endif
 		endif
 	enddo
 	! printing list of bonds
+	if (N.le.99999) then 
 	do i = 1, NB
 		dx = x(b1(i))-x(b2(i)); dy = y(b1(i))-y(b2(i)); dz = z(b1(i))-z(b2(i))
 		if (abs(dx).lt.BOX(1)*0.5.and.abs(dy).lt.BOX(2)*0.5.and.abs(dz).lt.BOX(3)*0.5) then
@@ -60,6 +66,7 @@ subroutine show(N, NB, b1, b2, BOX, x, y, z, typ, num) ! печатает ent-ф
 			endif
 		endif
 	enddo
+	endif
 	
 	close(n_ent)
 
