@@ -25,7 +25,7 @@ subroutine show(N, NB, b1, b2, BOX, x, y, z, typ, num) ! печатает ent-ф
 	open(n_ent,file = (trim(path) // Name_file))
 	! printing coordinates of beads:
 	do i = 1, N
-		if (ic.le.99999) then
+		if (i.le.99999) then
 			ic = i 
 		else
 			ic = 0
